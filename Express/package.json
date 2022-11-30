@@ -1,0 +1,18 @@
+{
+  "name": "express-ninja",
+  "version": "1.0.0",
+  "description": "Learing Express with NodeJs",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "Thiru",
+  "license": "ISC",
+  "dependencies": {
+    "compression": "^1.7.4",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "formidable": "^2.0.1"
+  }
+}
