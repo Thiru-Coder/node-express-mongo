@@ -1,39 +1,20 @@
-const cluster = require("cluster");
-// NodeJS Standard Library
+const express = require("express");
+const app = express();
+const { Worker } = require("worker_threads");
 
-// Round robin (RR) process scheduling is disabled in windows
-cluster.schedulingPolicy = cluster.SCHED_RR;
+app.get("/", (req, res) => {
+  const worker = new Worker("./worker.js");
 
-console.log(cluster.isMaster); //true
-// Cluster Manager => isMaster = true
-
-// Is the file being executed in master mode?
-if (cluster.isMaster) {
-  // Cause index.js to be executed *again* but in child mode
-  cluster.fork(); //set isMaster to false
-  //   add more children
-  cluster.fork();
-  cluster.fork();
-  cluster.fork();
-  cluster.fork();
-} else {
-  //Iam a Child
-  const express = require("express");
-  const app = express();
-
-  function doWork(duration) {
-    const start = Date.now();
-    while (Date.now() - start < duration) {}
-  }
-
-  app.get("/", (req, res) => {
-    doWork(5000); //Wait 5s for every request
-    res.send("Hi there!");
+  worker.on("message", function (message) {
+    console.log(message);
+    res.send("" + message);
   });
 
-  app.get("/fast", (req, res) => {
-    res.send("This was fast!");
-  });
+  worker.postMessage("start!");
+});
 
-  app.listen(3000);
-}
+app.get("/fast", (req, res) => {
+  res.send("This was fast!");
+});
+
+app.listen(3000);
