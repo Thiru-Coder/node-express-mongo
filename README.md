@@ -1,6 +1,6 @@
 # NodeJS
 
-NodeJs with Express, EJS, MongoDB and Mongoose.
+A collection of simple Node.js applications suitable for beginners. Each app demonstrates a different aspect of Node.js, such as working with Express, MongoDB, or third-party APIs. The code is well-commented and easy to follow, making it a great resource for learning and practicing basic Node.js skills. Whether you're a complete beginner or looking to refresh your Node.js knowledge, this repository provides a variety of useful examples to get you started.
 
 ## Console
 

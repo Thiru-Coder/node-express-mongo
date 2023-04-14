@@ -1,3 +1,7 @@
+/**
+ * Module dependencies.
+ */
+
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -7,28 +11,55 @@ const AppError = require("./AppError");
 
 const Product = require("./models/product");
 
-main().catch((err) => console.log(err));
-
+/**
+ * Connects to the MongoDB database.
+ * @async
+ * @function
+ */
 async function main() {
   await mongoose.connect("mongodb://localhost:27017/farmStand2");
 
   console.log("Connection Open");
 }
 
+main().catch((err) => console.log(err));
+
+/**
+ * Sets up the app's view engine and views directory.
+ */
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+/**
+ * Middleware for handling URL-encoded form data and spoofed HTTP methods.
+ */
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
+/**
+ * An array of all available product categories.
+ * @type {Array<string>}
+ */
 const categories = ["fruit", "vegetable", "dairy"];
 
+/**
+ * Wraps async functions so that any errors are passed to Express's next() function.
+ * @param {function} fn - An async function to wrap.
+ * @returns {function} A function that wraps an async function and passes any errors to Express's next() function.
+ */
 function wrapAsync(fn) {
   return function (req, res, next) {
     fn(req, res, next).catch((e) => next(e));
   };
 }
 
+/**
+ * Displays all products or only products within a given category.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next function.
+ * @returns {Promise<void>} - A Promise that resolves when the function finishes executing.
+ */
 app.get(
   "/products",
   wrapAsync(async (req, res, next) => {
@@ -43,10 +74,22 @@ app.get(
   })
 );
 
+/**
+ * Displays a form for creating a new product.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 app.get("/products/new", (req, res) => {
   res.render("products/new", { categories });
 });
 
+/**
+ * Creates a new product in the database.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next function.
+ * @returns {Promise<void>} - A Promise that resolves when the function finishes executing.
+ */
 app.post(
   "/products",
   wrapAsync(async (req, res, next) => {
@@ -56,6 +99,13 @@ app.post(
   })
 );
 
+/**
+ * Displays a single product.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next function.
+ * @returns {Promise<void>} - A Promise that resolves when the function finishes executing.
+ */
 app.get(
   "/products/:id",
   wrapAsync(async (req, res, next) => {
@@ -68,6 +118,13 @@ app.get(
   })
 );
 
+/**
+ * Displays a form for editing a single product.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next function.
+ * @returns {Promise<void>} - A Promise that resolves when the function finishes executing.
+ */
 app.get(
   "/products/:id/edit",
   wrapAsync(async (req, res, next) => {
@@ -82,6 +139,15 @@ app.get(
 
 app.put(
   "/products/:id",
+  /**
+   * Async middleware function that updates a single product in the database.
+   * @function
+   * @async
+   * @param {Object} req - Express request object.
+   * @param {Object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   * @throws {AppError} Will throw an error if product is not found.
+   */
   wrapAsync(async (req, res, next) => {
     const { id } = req.params;
     const product = await Product.findByIdAndUpdate(id, req.body, {
@@ -94,6 +160,13 @@ app.put(
 
 app.delete(
   "/products/:id",
+  /**
+   * Async middleware function that deletes a single product from the database.
+   * @function
+   * @async
+   * @param {Object} req - Express request object.
+   * @param {Object} res - Express response object.
+   */
   wrapAsync(async (req, res) => {
     const { id } = req.params;
     const deletedProduct = await Product.findByIdAndDelete(id);
@@ -101,12 +174,26 @@ app.delete(
   })
 );
 
+/**
+ * Function that handles a validation error and returns a new AppError.
+ * @function
+ * @param {Object} err - The error object returned by the validator.
+ * @returns {AppError} A new AppError object.
+ */
 const handleValidationErr = (err) => {
   console.dir(err);
   //In a real app, we would do a lot more here...
   return new AppError(`Validation Failed...${err.message}`, 400);
 };
 
+/**
+ * Middleware function that catches errors and passes them to the error handler.
+ * @function
+ * @param {Object} err - The error object.
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ */
 app.use((err, req, res, next) => {
   console.log(err.name);
   //We can single out particular types of Mongoose Errors:
@@ -114,6 +201,14 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
+/**
+ * Middleware function that catches errors and returns an error message.
+ * @function
+ * @param {Object} err - The error object.
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ */
 app.use((err, req, res, next) => {
   const { status = 500, message = "Something went wrong" } = err;
   res.status(status).send(message);

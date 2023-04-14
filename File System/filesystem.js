@@ -23,6 +23,8 @@ const data = `<!DOCTYPE html>
 </html>
 `;
 
+// Create a new folder and files for a basic HTML, CSS, and JS project.
+
 try {
   fs.mkdirSync(folderName);
 
