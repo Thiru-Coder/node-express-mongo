@@ -103,11 +103,11 @@ This is a simple Express.js server that allows users to Create, Read, Update and
 
 ## Router and Cookies
 
-# CookiesDemo
+### CookiesDemo
 
 This is an example Express app with cookie handling functionality. It uses the cookie-parser middleware to handle cookies, and defines four routes.
 
-# RouterDemo
+### RouterDemo
 
 An example of setting up a simple Express application that mounts three sets of routes: shelters, dogs, and admin.
 
@@ -121,10 +121,10 @@ This is a simple Node.js server that listens for incoming HTTP requests and resp
 
 ## Session and Flash
 
-# FlashDemo
+### FlashDemo
 
 It uses the "connect-flash" middleware to display flash messages on the web pages. When a message is flashed, it is stored in the session and is only displayed once, usually on the next page that is rendered.
 
-# SessionDemo
+### SessionDemo
 
 It uses sessions to count page views and greet registered users.
