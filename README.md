@@ -28,7 +28,7 @@ This is a Node.js app that takes a name as an argument or falls back to the curr
 
 ---
 
-## Enchanced Performance
+## Enhanced Performance
 
 This is an Express app that sets up two routes, "/" and "/fast". The first route starts a new worker thread and sends its message as the response. The second route simply responds with a message. The app listens on port 3000.
 
