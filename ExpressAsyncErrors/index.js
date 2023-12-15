@@ -17,7 +17,7 @@ const Product = require("./models/product");
  * @function
  */
 async function main() {
-  await mongoose.connect("mongodb://localhost:27017/farmStand2");
+  await mongoose.connect("mongodb://127.0.0.1:27017/farmStand2");
 
   console.log("Connection Open");
 }

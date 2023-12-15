@@ -7,11 +7,8 @@ const mongoose = require("mongoose");
  */
 async function connectToDatabase() {
   try {
-    // New - MongoDBCompass version
     await mongoose.connect("mongodb://127.0.0.1:27017/movies");
 
-    // Old - Mongo Daemon version
-    // await mongoose.connect("mongodb://localhost:27017/movies");
     console.log("Connected to MongoDB database!");
   } catch (err) {
     throw new Error(`Failed to connect to MongoDB database: ${err}`);

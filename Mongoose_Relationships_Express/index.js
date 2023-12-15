@@ -17,12 +17,7 @@ const categories = ["fruit", "vegetable", "dairy"];
  * @returns {Promise<void>}
  */
 async function main() {
-  // New - MongoDBCompass version
   await mongoose.connect("mongodb://127.0.0.1:27017/farmStandTake2");
-
-  // Old - Mongo Daemon version
-  await mongoose.connect("mongodb://localhost:27017/farmStandTake2");
-  console.log("MongoDB Connection Open!!!");
 }
 
 main().catch((err) => console.log(err));

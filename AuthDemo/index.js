@@ -19,11 +19,7 @@ mongoose.set("strictQuery", true);
  * @returns {Promise} A Promise that resolves when the connection is open.
  */
 async function main() {
-  // New - MongoDBCompass version
   await mongoose.connect("mongodb://127.0.0.1:27017/loginDemo");
-
-  // Old - Mongo Daemon version
-  // await mongoose.connect("mongodb://localhost:27017/loginDemo");
 }
 
 main()

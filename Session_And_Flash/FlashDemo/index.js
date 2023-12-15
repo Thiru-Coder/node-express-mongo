@@ -34,11 +34,7 @@ main()
  * @throws {Error} If an error occurs while connecting to the database
  */
 async function main() {
-  // New - MongoDBCompass version
   await mongoose.connect("mongodb://127.0.0.1:27017/farmStand");
-
-  // Old - Mongo Daemon version
-  // await mongoose.connect("mongodb://localhost:27017/farmStand");
 }
 
 app.set("views", path.join(__dirname, "views"));
